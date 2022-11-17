@@ -13,7 +13,8 @@ export default function Entries() {
             <FormStyle>
                 <input
                     name="value"
-                    type="text"
+                    type="number"
+                    min="0.1"
                     // value={loginInfo.email}
                     placeholder="Valor"
                     //onChange={formHandler}
