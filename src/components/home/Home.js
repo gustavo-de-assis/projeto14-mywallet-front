@@ -11,8 +11,8 @@ export default function Home(){
             <h1> Não há registros de entrada ou saída</h1>
         </WhiteBoard>
         <Buttons>
-            <Button> Entrada </Button>
-            <Button> Saida </Button>
+            <Button> Nova entrada </Button>
+            <Button> Nova saída </Button>
         </Buttons>
         </HomeContainer>
     )
