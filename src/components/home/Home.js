@@ -1,6 +1,25 @@
+import axios from "axios";
+import { useContext, useEffect } from "react";
 import styled from "styled-components";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function Home(){
+
+    const tk = useContext(AuthContext);
+    useEffect(()=>{
+        
+        const config = {
+            headers: {
+                Authorization: `Bearer ${tk}`
+            }
+        }
+
+        axios.get("https://localhost:5000/sign-in", config)
+        .then(()=> console.log(tk))
+        .catch((err)=> console.log(err));
+        
+    },[])
+
     return(
         <HomeContainer>
         <NavBar>
