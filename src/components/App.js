@@ -11,6 +11,7 @@ import AuthProvider from "../contexts/AuthContext"
 
 export default function App() {
     const [transactions, setTransactions] = useState([]);
+    const [total, setTotal] = useState(0);
 
     return (
         <BrowserRouter>
@@ -19,9 +20,22 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/sign-up" element={<Signup />} />
-                    <Route path="/home" element={<Home transactions={transactions}/>} />
-                    <Route path="/incomes" element={<Entries transactions={transactions} setTransactions={setTransactions}/>} />
-                    <Route path="/expenses" element={<Exits transactions={transactions} setTransactions={setTransactions}/>} />
+                    <Route path="/home"
+                        element={<Home
+                            transactions={transactions}
+                            total={total} />} />
+                    <Route path="/incomes"
+                        element={<Entries
+                            transactions={transactions}
+                            setTransactions={setTransactions}
+                            total={total}
+                            setTotal={setTotal} />} />
+                    <Route path="/expenses"
+                        element={<Exits
+                            transactions={transactions}
+                            setTransactions={setTransactions}
+                            total={total}
+                            setTotal={setTotal} />} />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

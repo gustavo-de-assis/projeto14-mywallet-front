@@ -6,7 +6,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 
 
-export default function Entries({ transactions, setTransactions}) {
+export default function Entries(props) {
+    const {transactions, setTransactions, total, setTotal} = props;
     const navigate = useNavigate();
     const [income, setIncome] = useState({value: "", description: ""});
 
@@ -19,6 +20,7 @@ export default function Entries({ transactions, setTransactions}) {
         e.preventDefault();
         console.log("entrada", income)
         setTransactions([...transactions, income]);
+        setTotal(total + Number(income.value));
 
         navigate("/home");
     }

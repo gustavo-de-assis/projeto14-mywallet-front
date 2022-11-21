@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../contexts/AuthContext";
 
-export default function Home({transactions}) {
+export default function Home({ transactions, total }) {
     const { token } = useContext(AuthContext);
-
+    
     useEffect(() => {
         console.log("transacoes", transactions);
         const config = {
@@ -21,7 +21,6 @@ export default function Home({transactions}) {
 
     }, []);
 
-
     return (
         <HomeContainer>
             <NavBar>
@@ -29,11 +28,17 @@ export default function Home({transactions}) {
                 <p>Bt</p>
             </NavBar>
             <WhiteBoard>
-                {transactions.length === 0 ? 
-                <h1> Não há registros de entrada ou saída</h1>
-                :
-                transactions.map((t,i)=>  <h1>{t.value} {t.description} </h1>)}
-                
+                {transactions.length === 0 ?
+                    <h1> Não há registros de entrada ou saída</h1>
+                    :
+                    <>
+                        {
+                            transactions.map((t, i) => <h1>{t.value} {t.description} </h1>)
+                        }
+                        <h1>Total: {total}</h1>
+
+                    </>
+                }
             </WhiteBoard>
             <Buttons>
                 <Link to="/incomes">
