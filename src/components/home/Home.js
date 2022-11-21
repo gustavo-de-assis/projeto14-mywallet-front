@@ -3,10 +3,12 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../contexts/AuthContext";
+import { RiLogoutBoxRLine } from "react-icons/ri";
+import { AiOutlinePlusCircle } from "react-icons/ai"
 
 export default function Home({ transactions, total }) {
     const { token } = useContext(AuthContext);
-    
+
     useEffect(() => {
         console.log("transacoes", transactions);
         const config = {
@@ -25,7 +27,8 @@ export default function Home({ transactions, total }) {
         <HomeContainer>
             <NavBar>
                 <h1>Olá, Fulano</h1>
-                <p>Bt</p>
+                <RiLogoutBoxRLine />
+
             </NavBar>
             <WhiteBoard>
                 {transactions.length === 0 ?
@@ -42,11 +45,17 @@ export default function Home({ transactions, total }) {
             </WhiteBoard>
             <Buttons>
                 <Link to="/incomes">
-                    <Button> Nova entrada </Button>
+                    <Button>
+                        <p>Nova entrada</p>
+                        <AiOutlinePlusCircle style={{color: "white"}}/>
+                    </Button>
                 </Link>
 
                 <Link to="/expenses">
-                    <Button> Nova saída </Button>
+                    <Button>
+                        <p>Nova saida</p>
+                        <AiOutlinePlusCircle style={{color: "white"}}/>
+                    </Button>
                 </Link>
             </Buttons>
         </HomeContainer>
@@ -104,8 +113,14 @@ const Button = styled.button`
 
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     border-radius: 5px;
     margin: 0 5px;
+    padding: 5px 10px;
     border: none;
+    p{
+        color: #fff;
+        font-weight: 600;
+    }
 
 `
