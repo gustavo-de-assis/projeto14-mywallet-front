@@ -34,13 +34,13 @@ export default function Home({ transactions, total }) {
                 {transactions.length === 0 ?
                     <h1> Não há registros de entrada ou saída</h1>
                     :
-                    <>
+                    <TransactionsContainer>
                         {
-                            transactions.map((t, i) => <h1>{t.value} {t.description} </h1>)
+                            transactions.map((t, i) => <p>{t.value} {t.description} </p>)
                         }
                         <h1>Total: {total}</h1>
 
-                    </>
+                    </TransactionsContainer>
                 }
             </WhiteBoard>
             <Buttons>
@@ -90,12 +90,28 @@ const WhiteBoard = styled.div`
 
     background-color: #fff;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
     
     margin: 10px 0;
     
     border-radius: 5px;
+`
+const TransactionsContainer = styled.div`
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 10px;
+    position: relative;
+    h1{
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+    }
+
+
 `
 
 const Buttons = styled.div`
