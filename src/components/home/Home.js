@@ -1,43 +1,47 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import AuthContext from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
-export default function Home(){
+export default function Home() {
+    //const [transactions, setTransactions] = useState([]);
 
-    const tk = useContext(AuthContext);
-    useEffect(()=>{
-        
+    const { token } = useContext(AuthContext);
+
+    useEffect(() => {
+
         const config = {
             headers: {
-                Authorization: `Bearer ${tk}`
+                Authorization: `Bearer ${token}`
             }
         }
 
-        axios.get("https://localhost:5000/sign-in", config)
-        .then(()=> console.log(tk))
-        .catch((err)=> console.log(err));
-        
-    },[])
+        axios.post("http://localhost:5000/sign-in", config)
+            .then(() => console.log(token))
+            .catch((err) => console.log(err));
 
-    return(
+    }, []);
+
+
+
+    return (
         <HomeContainer>
-        <NavBar>
-            <h1>Olá, Fulano</h1>
-            <p>Bt</p>
-        </NavBar>
-        <WhiteBoard>
-            <h1> Não há registros de entrada ou saída</h1>
-        </WhiteBoard>
-        <Buttons>
-            <Button> Nova entrada </Button>
-            <Button> Nova saída </Button>
-        </Buttons>
+            <NavBar>
+                <h1>Olá, Fulano</h1>
+                <p>Bt</p>
+            </NavBar>
+            <WhiteBoard>
+                <h1> Não há registros de entrada ou saída</h1>
+            </WhiteBoard>
+            <Buttons>
+                <Button> Nova entrada </Button>
+                <Button> Nova saída </Button>
+            </Buttons>
         </HomeContainer>
     )
 }
 
-const NavBar =styled.div`
+const NavBar = styled.div`
     width: 327px;
     height: 30px;
     
