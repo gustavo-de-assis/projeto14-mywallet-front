@@ -8,25 +8,41 @@ import { AiOutlinePlusCircle } from "react-icons/ai"
 
 export default function Home({ transactions, total }) {
     const { token } = useContext(AuthContext);
+    const [user, setUser] = useState({});
 
     useEffect(() => {
-        console.log("transacoes", transactions);
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
-
         axios.post("http://localhost:5000/sign-in", config)
-            .then(() => console.log(token))
+        .then((ans)=>{
+            console.log(ans.data);
+        }).catch((err)=> console.log(err.response.data));
+        
+        axios.get("http://localhost:5000/userInfo")
+            .then((ans) => {
+                console.log("User", ans.data);
+                setUser({...ans.data});
+            })
             .catch((err) => console.log(err));
 
     }, []);
+    console.log(user);
+
+    if(user === {}){
+        return(<>
+            Caregando...
+        </>)
+    }
+
+
 
     return (
         <HomeContainer>
             <NavBar>
-                <h1>Olá, Fulano</h1>
+                <h1>Olá, {user.name}</h1>
                 <RiLogoutBoxRLine />
 
             </NavBar>
@@ -36,7 +52,18 @@ export default function Home({ transactions, total }) {
                     :
                     <TransactionsContainer>
                         {
-                            transactions.map((t, i) => <p>{t.value} {t.description} </p>)
+                            transactions.map((t, i) => <TransactionBlock>
+                                <div>
+                                    <p></p>
+                                    <p> {t.description}</p>
+                                </div>
+                                {t.value > 0 ?
+                                    <p style={{ color: "#33bb77" }}>R$ {t.value}</p>
+                                :
+                                <p style={{ color: "#ff4467" }}>R$ {t.value}</p>
+                                }
+                            </TransactionBlock>
+                            )
                         }
                         <h1>Total: {total}</h1>
 
@@ -47,14 +74,14 @@ export default function Home({ transactions, total }) {
                 <Link to="/incomes">
                     <Button>
                         <p>Nova entrada</p>
-                        <AiOutlinePlusCircle style={{color: "white"}}/>
+                        <AiOutlinePlusCircle style={{ color: "white" }} />
                     </Button>
                 </Link>
 
                 <Link to="/expenses">
                     <Button>
                         <p>Nova saida</p>
-                        <AiOutlinePlusCircle style={{color: "white"}}/>
+                        <AiOutlinePlusCircle style={{ color: "white" }} />
                     </Button>
                 </Link>
             </Buttons>
@@ -96,6 +123,13 @@ const WhiteBoard = styled.div`
     margin: 10px 0;
     
     border-radius: 5px;
+    h1{
+        width: 60%;
+        color: #555;
+        align-self: center;
+        margin: 0 auto;
+        text-align: center;
+    }
 `
 const TransactionsContainer = styled.div`
     width: 100%;
@@ -110,10 +144,18 @@ const TransactionsContainer = styled.div`
         right: 10px;
         bottom: 10px;
     }
-
-
 `
+const TransactionBlock = styled.div`
 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin: 5px 0;
+    div{
+        
+    }
+`
 const Buttons = styled.div`
     display: flex;
     flex-direction: row;

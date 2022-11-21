@@ -4,43 +4,49 @@ import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import FormStyle from "../../assets/styles/FormStyle"
 import LoginContainer from "../../assets/styles/LoginContainer"
-import {AuthContext} from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Login() {
-    const { setToken } = useContext(AuthContext);
-    const [loginInfo, setLoginInfo] = useState({email: "", password: ""});
+    const { token, setToken } = useContext(AuthContext);
+    const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
     const navigate = useNavigate();
-    
-    useEffect(()=>{
-     /*    const localStorageToken = localStorage.getItem("token");
-        if(localStorageToken){
-            setToken(localStorageToken);
-        } */
-    },[]);     
+
+   /*  useEffect(() => {
+         const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+            axios.post("http://localhost:5000/sign-in", config)
+            .then((ans)=>{
+                console.log(ans.data);
+            }).catch((err)=> console.log(err.response.data))
+        }, []); */
 
 
-    function formHandler(e){
-        const {name, value} = e.target;
-        setLoginInfo({...loginInfo, [name]:value});
+    function formHandler(e) {
+        const { name, value } = e.target;
+        setLoginInfo({ ...loginInfo, [name]: value });
     }
 
-    function loginUser(e){
+    function loginUser(e) {
         e.preventDefault();
 
-        const login = {...loginInfo};
-        console.log(loginInfo);
+        const login = { ...loginInfo };
 
-        axios.post("http://localhost:5000/sign-in", login)
-        .then((ans)=>{
-            console.log(ans.data.token);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
 
-            setToken(ans.data.token);
-          //  localStorage.setItem("token", token);
+        axios.post("http://localhost:5000/sign-in", login, config)
+            .then((ans) => {
+                setToken(ans.data.token);
+                navigate("/home");
+            })
+            .catch((err) => { console.log(err.response.data) })
 
-            navigate("/home");
-        })
-        .catch((err)=>{console.log(err)})
-        
     }
 
     return (
