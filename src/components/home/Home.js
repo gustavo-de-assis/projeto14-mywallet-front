@@ -1,15 +1,14 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext } from "../../contexts/AuthContext";
 
-export default function Home() {
-    //const [transactions, setTransactions] = useState([]);
-
+export default function Home({transactions}) {
     const { token } = useContext(AuthContext);
 
     useEffect(() => {
-
+        console.log("transacoes", transactions);
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -23,7 +22,6 @@ export default function Home() {
     }, []);
 
 
-
     return (
         <HomeContainer>
             <NavBar>
@@ -31,11 +29,20 @@ export default function Home() {
                 <p>Bt</p>
             </NavBar>
             <WhiteBoard>
+                {transactions.length === 0 ? 
                 <h1> Não há registros de entrada ou saída</h1>
+                :
+                transactions.map((t,i)=>  <h1>{t.value} {t.description} </h1>)}
+                
             </WhiteBoard>
             <Buttons>
-                <Button> Nova entrada </Button>
-                <Button> Nova saída </Button>
+                <Link to="/incomes">
+                    <Button> Nova entrada </Button>
+                </Link>
+
+                <Link to="/expenses">
+                    <Button> Nova saída </Button>
+                </Link>
             </Buttons>
         </HomeContainer>
     )
