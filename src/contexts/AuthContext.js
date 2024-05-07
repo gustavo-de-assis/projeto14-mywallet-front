@@ -1,15 +1,50 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SignInRequest, recoverUserInfo } from "../services/auth";
 
 export const AuthContext = createContext({});
 
-export default function AuthProvider({children}){
+export default function AuthProvider({ children }) {
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-    const [token, setToken] = useState(null);
+  useEffect(() => {
+    if (token) {
+      recoverUserInfo(token).then((response) => {
+        setUser({ name: response.name, email: response.email });
+      });
+    }
+  }, [token]);
 
-    return(
-        <AuthContext.Provider value={ { token, setToken } } >
-            {children}
-        </AuthContext.Provider>
-    );
+  async function signInUser({ email, password }) {
+    const response = await SignInRequest({
+      email,
+      password,
+    });
 
+    console.log("Response: ", response);
+
+    if (!response) {
+      console.log("Invalid Credentials");
+      return;
+    }
+
+    setToken(response.token);
+    setUser(response.user);
+
+    navigate("/home");
+  }
+
+  async function signOutUser() {
+    setUser({ name: "", email: "" });
+    setToken(null);
+    navigate("/");
+  }
+
+  return (
+    <AuthContext.Provider value={{ signInUser, signOutUser, user }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
